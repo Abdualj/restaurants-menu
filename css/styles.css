@@ -1,0 +1,149 @@
+/* Reset some default browser styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Body */
+body {
+  background-color: #f9f9f9;
+  color: #333;
+  line-height: 1.5;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #0077cc;
+}
+
+/* Forms */
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto 20px auto;
+}
+
+form input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  padding: 10px;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+form button:hover {
+  background-color: #005fa3;
+}
+
+/* Error message */
+#login-error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Restaurant list and filters */
+#restaurant-filter {
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#restaurant-list {
+  list-style: none;
+  max-width: 400px;
+  margin: 0 auto 20px auto;
+  padding: 0;
+}
+
+#restaurant-list li {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#restaurant-list li:hover {
+  background-color: #e6f0fa;
+}
+
+/* Menu section */
+#menu-section {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#menu-section button {
+  margin: 5px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #0077cc;
+  background-color: #fff;
+  color: #0077cc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#menu-section button:hover {
+  background-color: #0077cc;
+  color: #fff;
+}
+
+#menu-list {
+  list-style: none;
+  margin-top: 10px;
+  padding: 0;
+}
+
+#menu-list li {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 5px;
+  border-radius: 4px;
+}
+
+/* Sections */
+section {
+  margin-bottom: 30px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  body {
+    padding: 10px;
+  }
+
+  form, #restaurant-list, #menu-section {
+    width: 100%;
+  }
+}

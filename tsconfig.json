@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES6",              // Output ES6 compatible JS
+    "module": "ES6",              // Use ES6 modules
+    "outDir": "./js",             // Output compiled JS here
+    "rootDir": "./ts",            // Source TS files location
+    "strict": true,               // Enable strict type-checking
+    "esModuleInterop": true,      // For module compatibility
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true             // Optional: generate .map for debugging
+  },
+  "include": ["ts/**/*.ts"]
+}
