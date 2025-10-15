@@ -1,5 +1,3 @@
-declare const mapboxgl: any;
-
 import { getRestaurants, getMenu } from './api.js';
 import { renderRestaurants, renderMenu } from './ui.js';
 
@@ -13,27 +11,10 @@ const weekBtn = document.getElementById('week-menu-btn') as HTMLButtonElement;
 let restaurants: any[] = [];
 let selectedRestaurantId: string | null = null;
 
-// Mapbox setup
-mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXI4YzJrcXpjMWkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
-const map = new mapboxgl.Map({
-  container: 'map',
-  style: 'mapbox://styles/mapbox/streets-v11',
-  center: [24.941, 60.173],
-  zoom: 12
-});
-
 // Load restaurants immediately
 (async () => {
   restaurants = await getRestaurants();
   renderRestaurants(restaurants, restaurantFilter, restaurantList);
-
-  // Add map markers
-  restaurants.forEach(r => {
-    new mapboxgl.Marker()
-      .setLngLat(r.location.coordinates)
-      .setPopup(new mapboxgl.Popup().setText(r.name))
-      .addTo(map);
-  });
 })();
 
 // Restaurant selection
