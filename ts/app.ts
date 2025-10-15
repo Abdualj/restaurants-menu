@@ -1,10 +1,8 @@
 declare const mapboxgl: any;
 
-import { login, getRestaurants, getMenu } from './api.js';
+import { getRestaurants, getMenu } from './api.js';
 import { renderRestaurants, renderMenu } from './ui.js';
 
-const loginForm = document.getElementById('login-form') as HTMLFormElement;
-const loginError = document.getElementById('login-error') as HTMLElement;
 const restaurantsSection = document.getElementById('restaurants-section') as HTMLElement;
 const restaurantList = document.getElementById('restaurant-list') as HTMLUListElement;
 const restaurantFilter = document.getElementById('restaurant-filter') as HTMLSelectElement;
@@ -16,7 +14,7 @@ let restaurants: any[] = [];
 let selectedRestaurantId: string | null = null;
 
 // Mapbox setup
-mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXI4YzJrcXpjMWkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
@@ -24,31 +22,19 @@ const map = new mapboxgl.Map({
   zoom: 12
 });
 
-// Login form
-loginForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const username = (document.getElementById('username') as HTMLInputElement).value;
-  const password = (document.getElementById('password') as HTMLInputElement).value;
+// Load restaurants immediately
+(async () => {
+  restaurants = await getRestaurants();
+  renderRestaurants(restaurants, restaurantFilter, restaurantList);
 
-  try {
-    await login(username, password);
-    loginForm.style.display = 'none';
-    restaurantsSection.style.display = 'block';
-
-    restaurants = await getRestaurants();
-    renderRestaurants(restaurants, restaurantFilter, restaurantList);
-
-    // Add map markers
-    restaurants.forEach(r => {
-      new mapboxgl.Marker()
-        .setLngLat(r.location.coordinates)
-        .setPopup(new mapboxgl.Popup().setText(r.name))
-        .addTo(map);
-    });
-  } catch {
-    loginError.textContent = 'Login failed.';
-  }
-});
+  // Add map markers
+  restaurants.forEach(r => {
+    new mapboxgl.Marker()
+      .setLngLat(r.location.coordinates)
+      .setPopup(new mapboxgl.Popup().setText(r.name))
+      .addTo(map);
+  });
+})();
 
 // Restaurant selection
 restaurantList.addEventListener('click', (e) => {
