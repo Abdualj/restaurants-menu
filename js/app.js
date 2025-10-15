@@ -19,6 +19,13 @@ const dayBtn = document.getElementById('day-menu-btn');
 const weekBtn = document.getElementById('week-menu-btn');
 let restaurants = [];
 let selectedRestaurantId = null;
+mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXI4YzJrcXpjMWkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
+const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [24.941, 60.173],
+    zoom: 12
+});
 loginForm.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, function* () {
     e.preventDefault();
     const username = document.getElementById('username').value;
@@ -29,15 +36,23 @@ loginForm.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, fu
         restaurantsSection.style.display = 'block';
         restaurants = yield getRestaurants();
         renderRestaurants(restaurants, restaurantFilter, restaurantList);
+        restaurants.forEach(r => {
+            new mapboxgl.Marker()
+                .setLngLat(r.location.coordinates)
+                .setPopup(new mapboxgl.Popup().setText(r.name))
+                .addTo(map);
+        });
     }
     catch (err) {
-        loginError.textContent = 'Login failed. Check your credentials.';
+        loginError.textContent = 'Login failed.';
     }
 }));
 restaurantList.addEventListener('click', (e) => {
     const target = e.target;
     if (target.tagName === 'LI') {
         selectedRestaurantId = target.dataset.id || null;
+        Array.from(restaurantList.children).forEach(li => li.classList.remove('selected'));
+        target.classList.add('selected');
     }
 });
 dayBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {

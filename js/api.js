@@ -7,43 +7,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { restaurants, dailyMenus, weeklyMenus } from './mock-data.js';
 let token = null;
 export function login(username, password) {
     return __awaiter(this, void 0, void 0, function* () {
-        const res = yield fetch('https://media1.edu.metropolia.fi/api/v1/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-        if (!res.ok)
-            throw new Error('Login failed');
-        const data = yield res.json();
-        token = data.token;
-        // Only store token if it's not null
-        if (token !== null) {
-            localStorage.setItem('token', token);
-        }
-        return token; // <- return is **outside** the if block
+        token = 'mock-token';
+        localStorage.setItem('token', token);
+        return token;
     });
 }
 export function getRestaurants() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!token)
-            throw new Error('No token');
-        const res = yield fetch('https://media1.edu.metropolia.fi/api/v1/restaurant', {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        return yield res.json();
+        return restaurants;
     });
 }
 export function getMenu(restaurantId, type) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!token)
-            throw new Error('No token');
-        const res = yield fetch(`https://media1.edu.metropolia.fi/api/v1/restaurant/${restaurantId}/menu?type=${type}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        return yield res.json();
+        if (type === 'day')
+            return dailyMenus[restaurantId];
+        return weeklyMenus[restaurantId];
     });
 }
 //# sourceMappingURL=api.js.map
