@@ -19,13 +19,15 @@ const dayBtn = document.getElementById('day-menu-btn');
 const weekBtn = document.getElementById('week-menu-btn');
 let restaurants = [];
 let selectedRestaurantId = null;
-mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXI4YzJrcXpjMWkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
+// Mapbox setup
+mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
 const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v11',
     center: [24.941, 60.173],
     zoom: 12
 });
+// Login form
 loginForm.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, function* () {
     e.preventDefault();
     const username = document.getElementById('username').value;
@@ -36,6 +38,7 @@ loginForm.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, fu
         restaurantsSection.style.display = 'block';
         restaurants = yield getRestaurants();
         renderRestaurants(restaurants, restaurantFilter, restaurantList);
+        // Add map markers
         restaurants.forEach(r => {
             new mapboxgl.Marker()
                 .setLngLat(r.location.coordinates)
@@ -43,10 +46,11 @@ loginForm.addEventListener('submit', (e) => __awaiter(void 0, void 0, void 0, fu
                 .addTo(map);
         });
     }
-    catch (err) {
+    catch (_a) {
         loginError.textContent = 'Login failed.';
     }
 }));
+// Restaurant selection
 restaurantList.addEventListener('click', (e) => {
     const target = e.target;
     if (target.tagName === 'LI') {
@@ -55,6 +59,7 @@ restaurantList.addEventListener('click', (e) => {
         target.classList.add('selected');
     }
 });
+// Day/Week menu buttons
 dayBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, function* () {
     if (!selectedRestaurantId)
         return;
@@ -67,10 +72,10 @@ weekBtn.addEventListener('click', () => __awaiter(void 0, void 0, void 0, functi
     const menu = yield getMenu(selectedRestaurantId, 'week');
     renderMenu(menu, menuList);
 }));
-// Register service worker
+// Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
         .then(() => console.log('Service Worker registered'))
-        .catch(err => console.log('Service Worker registration failed:', err));
+        .catch(err => console.log('Service Worker failed:', err));
 }
 //# sourceMappingURL=app.js.map

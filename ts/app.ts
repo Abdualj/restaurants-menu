@@ -15,7 +15,8 @@ const weekBtn = document.getElementById('week-menu-btn') as HTMLButtonElement;
 let restaurants: any[] = [];
 let selectedRestaurantId: string | null = null;
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXI4YzJrcXpjMWkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
+// Mapbox setup
+mapboxgl.accessToken = 'pk.eyJ1IjoiaWxra2FtdGsiLCJhIjoiY20xZzNvMmJ5MXkzYnZlYSJ9.niDiGDLgFfvA2DMqxbB1QQ';
 const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
@@ -23,28 +24,33 @@ const map = new mapboxgl.Map({
   zoom: 12
 });
 
+// Login form
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const username = (document.getElementById('username') as HTMLInputElement).value;
   const password = (document.getElementById('password') as HTMLInputElement).value;
+
   try {
     await login(username, password);
     loginForm.style.display = 'none';
     restaurantsSection.style.display = 'block';
+
     restaurants = await getRestaurants();
     renderRestaurants(restaurants, restaurantFilter, restaurantList);
 
+    // Add map markers
     restaurants.forEach(r => {
       new mapboxgl.Marker()
         .setLngLat(r.location.coordinates)
         .setPopup(new mapboxgl.Popup().setText(r.name))
         .addTo(map);
     });
-  } catch (err) {
+  } catch {
     loginError.textContent = 'Login failed.';
   }
 });
 
+// Restaurant selection
 restaurantList.addEventListener('click', (e) => {
   const target = e.target as HTMLElement;
   if (target.tagName === 'LI') {
@@ -54,6 +60,7 @@ restaurantList.addEventListener('click', (e) => {
   }
 });
 
+// Day/Week menu buttons
 dayBtn.addEventListener('click', async () => {
   if (!selectedRestaurantId) return;
   const menu = await getMenu(selectedRestaurantId, 'day');
@@ -66,9 +73,9 @@ weekBtn.addEventListener('click', async () => {
   renderMenu(menu, menuList);
 });
 
-// Register service worker
+// Service Worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js')
     .then(() => console.log('Service Worker registered'))
-    .catch(err => console.log('Service Worker registration failed:', err));
+    .catch(err => console.log('Service Worker failed:', err));
 }
